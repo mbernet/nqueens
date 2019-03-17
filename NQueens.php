@@ -51,6 +51,8 @@ class NQueens {
 }
 
 
-
+$start = microtime(true);
 $board = [null, null , null , null, null , null , null , null];
 (new NQueens())->generate($board, 0);
+$time_elapsed_secs = microtime(true) - $start;
+echo "Time elapsed: $time_elapsed_secs";
