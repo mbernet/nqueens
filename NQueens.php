@@ -86,7 +86,6 @@ class NQueens
         } else {
             echo "Drawing board: ".EOL;
         }
-        $z=0;
         for ($i=0; $i<self::SIZE; $i++) {
             for ($j=0; $j<self::SIZE; $j++) {
                 if ($j == 0) {
@@ -95,11 +94,9 @@ class NQueens
                 if ($board[$i] === $j) {
                     echo ' ♕ ';
                 } else {
-                    echo $z%2 == 0 ? ' ■ ': ' · ';
+                    echo ($i+$j)%2 == 0 ? ' ■ ': ' · ';
                 }
-                $z++;
             }
-            $z++;
             echo EOL;
         }
         echo "*";
