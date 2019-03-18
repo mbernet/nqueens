@@ -6,18 +6,19 @@ define('EOL', "\r\n");
  */
 class NQueens
 {
-    const SIZE = 8;
     public $numSolutions;
     public $executionTime;
 
     private $startTime;
+    private $size;
 
 
     /**
      * NQueens constructor.
      */
-    public function __construct()
+    public function __construct($size = 8)
     {
+        $this->size = $size;
         $this->startTime = microtime(true);
     }
 
@@ -26,7 +27,7 @@ class NQueens
      */
     public function main()
     {
-        $board = array_fill(0, self::SIZE, null);
+        $board = array_fill(0, $this->size, null);
         $this->generate($board, 0);
         $this->executionTime = round(microtime(true) - $this->startTime, 2);
         return $this;
@@ -38,10 +39,10 @@ class NQueens
      */
     private function generate($board, $row)
     {
-        if ($row == self::SIZE) {
+        if ($row == $this->size) {
             $this->draw($board, true);
         } else {
-            for ($i = 0; $i < self::SIZE; $i++) {
+            for ($i = 0; $i < $this->size; $i++) {
                 if ($this->canBePlaced($i, $row, $board)) {
                     $board[$row] = $i;
                     $this->generate($board, $row + 1);
@@ -86,10 +87,10 @@ class NQueens
         } else {
             echo "Drawing board: ".EOL;
         }
-        for ($i=0; $i<self::SIZE; $i++) {
-            for ($j=0; $j<self::SIZE; $j++) {
+        for ($i=0; $i<$this->size; $i++) {
+            for ($j=0; $j<$this->size; $j++) {
                 if ($j == 0) {
-                    echo self::SIZE - $i;
+                    echo $this->size - $i;
                 }
                 if ($board[$i] === $j) {
                     echo ' ♕ ';
@@ -100,7 +101,7 @@ class NQueens
             echo EOL;
         }
         echo "*";
-        for ($i=0; $i<self::SIZE; $i++) {
+        for ($i=0; $i<$this->size; $i++) {
             $char = chr(ord('a')+$i);
             echo " $char ";
         }
@@ -108,5 +109,5 @@ class NQueens
     }
 }
 
-$nQueens = (new NQueens())->main();
+$nQueens = (new NQueens(8))->main();
 echo "Num Solutions: {$nQueens->numSolutions}. Time elapsed: {$nQueens->executionTime}".EOL;
