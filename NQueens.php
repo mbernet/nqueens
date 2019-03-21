@@ -22,6 +22,9 @@ class NQueens
     public $numSolutions;
     private $size;
 
+    public $executionTime;
+    private $startTime;
+
 
     /**
      * NQueens constructor.
