@@ -7,9 +7,6 @@ define('EOL', "\r\n");
 class NQueens
 {
     public $numSolutions;
-    public $executionTime;
-
-    private $startTime;
     private $size;
 
 
@@ -19,40 +16,39 @@ class NQueens
     public function __construct($size = 8)
     {
         $this->size = $size;
-        $this->startTime = microtime(true);
     }
 
     /**
+     * Inicialización. El tablero se representa así [0,1,2,3,4,5,6,7].
+     * Eso significa que en la primera fila, la reina está en la columna 0,
+     * en la segunda fila, la reina está en la columna 1, etc etc....
+     *
      * @return $this
      */
     public function main()
     {
+        // Ejemplo draw:
+        $this->draw([0,1,2,3,4,5,6,7], false);
         $board = array_fill(0, $this->size, null);
         $this->generate($board, 0);
-        $this->executionTime = round(microtime(true) - $this->startTime, 2);
+
         return $this;
     }
 
     /**
+     * Ésta función tiene que generar todos los tableros válidos. A cada tablero válido puedes invocar a draw para pintarlo
+     *
      * @param $board
      * @param $row
      */
     private function generate($board, $row)
     {
-        if ($row == $this->size) {
-            $this->draw($board, true);
-        } else {
-            for ($i = 0; $i < $this->size; $i++) {
-                if ($this->canBePlaced($i, $row, $board)) {
-                    $board[$row] = $i;
-                    $this->generate($board, $row + 1);
-                }
-            }
-        }
+
     }
 
 
     /**
+     * Ésta función puede ser usada desde generate para comprobar si los tableros son válidos
      * @param $col
      * @param $row
      * @param $board
@@ -61,21 +57,13 @@ class NQueens
      */
     private function canBePlaced($col, $row, $board)
     {
-        for ($i=0; $i < $row; $i++) {
-            if ($board[$i] !== null) {
-                if ($board[$i] === $col) {
-                    return false;
-                }
-                if ($board[$i] + $i === $col + $row || $board[$i] - $i === $col - $row) {
-                    return false;
-                }
-            }
-        }
+        // check if queen can be placed here
         return true;
     }
 
 
     /**
+     * Ésta función dibuja un tablero.
      * @param $board
      * @param bool $isCorrect
      */
@@ -110,4 +98,4 @@ class NQueens
 }
 
 $nQueens = (new NQueens(8))->main();
-echo "Num Solutions: {$nQueens->numSolutions}. Time elapsed: {$nQueens->executionTime}".EOL;
+echo "Num Solutions: {$nQueens->numSolutions}.".EOL;
