@@ -40,12 +40,7 @@ class NQueens
      */
     public function main()
     {
-        $board = array_fill(0, $this->size, null);
-        $initialBoard = $board[0] = 0;
-        $stack = new Stack();
-        $stack->push(new State($initialBoard, 0));
-        $this->generate($stack);
-
+        $this->generate();
         return $this;
     }
 
@@ -55,14 +50,30 @@ class NQueens
      * @param $board
      * @param $row
      */
-    private function generate(Stack $stack)
+    private function generate()
     {
-        while(!$stack->isEmpty()) {
-            for($i = 0; $i < $this->size; $i++) {
-                // $currentState = $stack
-            }
-        }
+        $board = array_fill(0, $this->size, null);
+        $stack = new Stack();
+        $expandedNodes = [];
+        $board[0] = 0;
+        $stack->push(new State($board, 0));
 
+        do {
+            $currentState = $stack->pop();
+            $expandedNodes[] = $currentState;
+            if ($currentState->row >= $this->size) {
+                $this->draw($currentState->board, true);
+            }
+            else {
+                for ($i = 0; $i < $this->size; $i++) {
+                    if ($this->canBePlaced($i, $currentState->row, $currentState->board)) {
+                        $newBoard = $currentState->board;
+                        $newBoard[$currentState->row] = $i;
+                        $stack->push(new State($newBoard, $currentState->row + 1));
+                    }
+                }
+            }
+        } while(!$stack->isEmpty());
     }
 
 
@@ -76,7 +87,16 @@ class NQueens
      */
     private function canBePlaced($col, $row, $board)
     {
-        // check if queen can be placed here
+        for ($i=0; $i < $row; $i++) {
+            if ($board[$i] !== null) {
+                if ($board[$i] === $col) {
+                    return false;
+                }
+                if ($board[$i] + $i === $col + $row || $board[$i] - $i === $col - $row) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
