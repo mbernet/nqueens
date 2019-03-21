@@ -1,5 +1,18 @@
 <?php
 define('EOL', "\r\n");
+include "Stack.php";
+
+class State {
+
+    public $board;
+    public $row;
+
+    public function __construct(array $board, int $row)
+    {
+        $this->board = $board;
+        $this->row = $row;
+    }
+}
 
 /**
  * Class NQueens
@@ -27,10 +40,11 @@ class NQueens
      */
     public function main()
     {
-        // Ejemplo draw:
-        $this->draw([0,1,2,3,4,5,6,7], false);
         $board = array_fill(0, $this->size, null);
-        $this->generate($board, 0);
+        $initialBoard = $board[0] = 0;
+        $stack = new Stack();
+        $stack->push(new State($initialBoard, 0));
+        $this->generate($stack);
 
         return $this;
     }
@@ -41,8 +55,13 @@ class NQueens
      * @param $board
      * @param $row
      */
-    private function generate($board, $row)
+    private function generate(Stack $stack)
     {
+        while(!$stack->isEmpty()) {
+            for($i = 0; $i < $this->size; $i++) {
+                // $currentState = $stack
+            }
+        }
 
     }
 
