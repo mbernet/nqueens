@@ -48,7 +48,7 @@ class NQueens
 
 
     /**
-     * Ésta función puede ser usada desde generate para comprobar si los tableros son válidos
+     * Ésta función puede ser usada desde generate para comprobar si una pieza está a salvo en una posición
      * @param $col
      * @param $row
      * @param $board
