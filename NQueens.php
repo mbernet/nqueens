@@ -32,6 +32,7 @@ class NQueens
     public function __construct($size = 8)
     {
         $this->size = $size;
+        $this->startTime = microtime(true);
     }
 
     /**
@@ -44,6 +45,7 @@ class NQueens
     public function main()
     {
         $this->generate();
+        $this->executionTime = round(microtime(true) - $this->startTime, 2);
         return $this;
     }
 
@@ -140,4 +142,4 @@ class NQueens
 }
 
 $nQueens = (new NQueens(8))->main();
-echo "Num Solutions: {$nQueens->numSolutions}.".EOL;
+echo "Num Solutions: {$nQueens->numSolutions}. Execution time {$nQueens->executionTime}".EOL;
