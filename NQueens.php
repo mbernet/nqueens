@@ -2,91 +2,78 @@
 define('EOL', "\r\n");
 
 /**
+ *
+ * El problema de las ocho reinas es un pasatiempo que consiste en poner ocho reinas en el tablero de ajedrez sin que se amenacen
+ *
  * Class NQueens
  */
 class NQueens
 {
-    public $numSolutions;
-    public $executionTime;
-
-    private $startTime;
     private $size;
 
-
-    /**
-     * NQueens constructor.
-     */
     public function __construct($size = 8)
     {
         $this->size = $size;
-        $this->startTime = microtime(true);
     }
 
     /**
+     * Ésta función tiene que mostrar al usuario todas las posibles soluciones.
+     *
+     * Como cada reina puede amenazar a todas las reinas que estén en la misma fila, cada una ha de situarse en una
+     * fila diferente. Podemos representar las 8 reinas mediante un vector[1-8], teniendo en cuenta que cada índice del
+     * vector representa una fila y el valor una columna
+     *
+     * Vamos a utilizar entonces un array PHP con el tamaño size para representar el tablero. por ejemplo:
+     *
+     * [0, 4, 7, 5, 2, 6, 1, 3] Representa un tablero así
+     *
+     *       ♕  ·  ■  ·  ■  ·  ■  ·
+     *       ·  ■  ·  ■  ♕  ■  ·  ■
+     *       ■  ·  ■  ·  ■  ·  ■  ♕
+     *       ·  ■  ·  ■  ·  ♕  ·  ■
+     *       ■  ·  ♕  ·  ■  ·  ■  ·
+     *       ·  ■  ·  ■  ·  ■  ♕  ■
+     *       ■  ♕  ■  ·  ■  ·  ■  ·
+     *       ·  ■  ·  ♕  ·  ■  ·  ■
+     *
+     * Ya que la primera reina de la primera fila está en la posición 0,
+     * La segunda reina de la segunda fila está en la posición 4,
+     * etc
+     * etc.
+     *
+     *
+     * La función draw dibuja una representación gráfica de ésta estructura
+     *
      * @return $this
      */
     public function main()
     {
-        $board = array_fill(0, $this->size, null);
-        $this->generate($board, 0);
-        $this->executionTime = round(microtime(true) - $this->startTime, 2);
-        return $this;
-    }
-
-    /**
-     * @param $board
-     * @param $row
-     */
-    private function generate($board, $row)
-    {
-        if ($row == $this->size) {
-            $this->draw($board, true);
-        } else {
-            for ($i = 0; $i < $this->size; $i++) {
-                if ($this->canBePlaced($i, $row, $board)) {
-                    $board[$row] = $i;
-                    $this->generate($board, $row + 1);
-                }
-            }
-        }
+        $board = array_fill(0, $this->size, null); // Inicializamos el tablero a 0 (sin reinas) y llamamos a la función para generar las soluciones
+        $this->generate($board);
     }
 
 
     /**
-     * @param $col
-     * @param $row
-     * @param $board
+     * La función generate puede llevar más argumentos si se necesitan.
      *
-     * @return bool
+     * También se recomienda separar algo de lógica en una función auxiliar para saber si las reinas se matan entre si
+     * o están en posición correcta.
+     *
+     * @param $board
      */
-    private function canBePlaced($col, $row, $board)
+    private function generate($board)
     {
-        for ($i=0; $i < $row; $i++) {
-            if ($board[$i] !== null) {
-                if ($board[$i] === $col) {
-                    return false;
-                }
-                if ($board[$i] + $i === $col + $row || $board[$i] - $i === $col - $row) {
-                    return false;
-                }
-            }
-        }
-        return true;
+
     }
+
+
 
 
     /**
      * @param $board
-     * @param bool $isCorrect
      */
-    private function draw($board, $isCorrect = false)
+    private function draw($board)
     {
-        if ($isCorrect) {
-            $this->numSolutions++;
-            echo " * Drawing solution {$this->numSolutions} * ".EOL;
-        } else {
-            echo "Drawing board: ".EOL;
-        }
         for ($i=0; $i<$this->size; $i++) {
             for ($j=0; $j<$this->size; $j++) {
                 if ($j == 0) {
@@ -109,5 +96,8 @@ class NQueens
     }
 }
 
-$nQueens = (new NQueens(8))->main();
-echo "Num Solutions: {$nQueens->numSolutions}. Time elapsed: {$nQueens->executionTime}".EOL;
+
+/**
+ * Llamamos al programa con un size de 8 reinas en un tablero de 8x8
+ */
+(new NQueens(8))->main();
